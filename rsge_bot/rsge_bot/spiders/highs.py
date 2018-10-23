@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
+
+# Helper variables/definitions
 NAMES = []
 DIFF = []
 VALUE = []
+
+str_chopper = lambda I : list(I)
 
 
 class PriceHighsSpider(scrapy.Spider):
