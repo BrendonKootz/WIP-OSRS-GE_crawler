@@ -1,11 +1,62 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
+NAMES = []
+DIFF = []
+VALUE = []
+
 
 class LowsSpider(scrapy.Spider):
-    name = 'lows'
-    allowed_domains = ['services.runescape.com']
-    start_urls = ['http://services.runescape.com/']
+	name = 'lows'
+	allowed_domains = ['services.runescape.com']
+	start_urls = ['http://services.runescape.com/m=itemdb_oldschool/top100?list=3']
+    
+	def parse(self, response):
+		"""Grab the span elements of every item 
+		listed that has gone up in price"""
 
-    def parse(self, response):
-        pass
+		# Get player item names
+		item_names = response.xpath('//a[@class="table-item-link"]/span/text()').extract()
+
+		# Get player item change %
+		item_percent = response.xpath('//tbody/tr/td[@class="change negative"]/a/text()').extract()
+		
+		# Get item value
+		item_value = response.xpath('//tbody/tr/td[4]/a/text()').extract()
+
+
+		print("*"*30)
+		print("|||\tSpider Has Ran \t|||\n")
+		
+		# Tell the user if no item's have been found
+		if len(item_names) == 0:
+			print(">\tNo Item's collected")
+		else:
+			print(item_names)
+		
+		# Append all items to NAMES list
+		for item in item_names:
+			NAMES.append(item)
+			
+		# Append all differences to DIFF list
+		for item in item_percent:
+			DIFF.append(item)
+			
+		# Append all values to VALUE list
+		for item in item_value:
+			VALUE.append(item)
+
+		print(">\tparse() has finished\n" + "*"*30)
+
+		# Primary formatting loop
+		for i in range(0,100):
+			#print("GE Item: {}\t\t  |  PercentChange: {}".format(NAMES[i],DIFF[i]))
+			print("""
+		=====================
+		Item:\t{}
+		Change:\t{}
+		Price:\t{}
+		====================
+			""".format(NAMES[i],DIFF[i],VALUE[i]))
+		
+
