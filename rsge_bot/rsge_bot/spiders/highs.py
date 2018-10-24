@@ -4,10 +4,12 @@ import scrapy
 
 # Helper variables/definitions
 NAMES = []
-DIFF = []
+DIFF_P = []
+DIFF_N = []
 VALUE = []
+VALUE= []
 
-str_chopper = lambda I : list(I)
+str_chopper = lambda String : list(String)
 
 
 class PriceHighsSpider(scrapy.Spider):
@@ -17,7 +19,8 @@ class PriceHighsSpider(scrapy.Spider):
 
 	name = 'highs'
 	allowed_domains = ['services.runescape.com']
-	start_urls = ['http://services.runescape.com/m=itemdb_oldschool/top100?list=2']
+	start_urls = ['http://services.runescape.com/m=itemdb_oldschool/top100?list=2',
+								'http://services.runescape.com/m=itemdb_oldschool/top100?list=3']
 
 	def parse(self, response):
 		"""Grab the span elements of every item 
@@ -27,8 +30,8 @@ class PriceHighsSpider(scrapy.Spider):
 		item_names = response.xpath('//a[@class="table-item-link"]/span/text()').extract()
 
 		# Get player item change %
-		item_percent = response.xpath('//tbody/tr/td[@class="change positive"]/a/text()').extract()
-		
+		item_change_pos = response.xpath('//tbody/tr/td[@class="change positive"]/a/text()').extract()
+		item_change_neg = response.xpath('//tobdy/tr/td[@class="change negative"]/a/text()').extract()
 		# Get item value
 		item_value = response.xpath('//tbody/tr/td[4]/a/text()').extract()
 
@@ -46,26 +49,27 @@ class PriceHighsSpider(scrapy.Spider):
 		for item in item_names:
 			NAMES.append(item)
 			
-		# Append all differences to DIFF list
-		for item in item_percent:
-			DIFF.append(item)
+		# Append all differences to DIFF_x list
+		for item in item_change_pos:
+			DIFF_P.append(item)
+			
+		for item in item_change_neg:
+			DIFF_N.append(item)
 			
 		# Append all values to VALUE list
 		for item in item_value:
 			VALUE.append(item)
 
-		print(">\tparse() has finished\n" + "*"*30)
-
 		# Primary formatting loop
-		for i in range(0,100):
-			#print("GE Item: {}\t\t  |  PercentChange: {}".format(NAMES[i],DIFF[i]))
+		for i in len(DIFF_P):
 			print("""
-		=====================
-		Item:\t{}
-		Change:\t{}
-		Price:\t{}
-		====================
-			""".format(NAMES[i],DIFF[i],VALUE[i]))
+	=====================
+									P+
+	Item:\t{}
+	Change:\t{}
+	Price:\t{}
+	====================
+			""".format(NAMES[i],DIFF_P[i],VALUE[i]))
 		
 
 #############################################
