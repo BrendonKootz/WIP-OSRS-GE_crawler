@@ -17,7 +17,7 @@ class PriceHighsSpider(scrapy.Spider):
 	into readable data sets, after that has been accomlished 
 	the next goal will be writing the parsed data to a file """
 
-	name = 'highs'
+	name = 'stats'
 	allowed_domains = ['services.runescape.com']
 	start_urls = ['http://services.runescape.com/m=itemdb_oldschool/top100?list=2',
 								'http://services.runescape.com/m=itemdb_oldschool/top100?list=3']
