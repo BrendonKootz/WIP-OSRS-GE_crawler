@@ -35,6 +35,8 @@ class PriceHighsSpider(scrapy.Spider):
 		# Get item value
 		item_value = response.xpath('//tbody/tr/td[4]/a/text()').extract()
 
+		Total = len(item_names)
+
 
 		print("*"*30)
 		print("|||\tSpider Has Ran \t|||\n")
@@ -43,7 +45,7 @@ class PriceHighsSpider(scrapy.Spider):
 		if len(item_names) == 0:
 			print(">\tNo Item's collected")
 		else:
-			print(item_names)
+			print("ITEM NAMES: ",item_names)
 		
 		# Append all items to NAMES list
 		for item in item_names:
@@ -61,7 +63,7 @@ class PriceHighsSpider(scrapy.Spider):
 			VALUE.append(item)
 
 		# Primary formatting loop
-		for i in len(DIFF_P):
+		for i in list(len(item_names)):
 			print("""
 	=====================
 									P+

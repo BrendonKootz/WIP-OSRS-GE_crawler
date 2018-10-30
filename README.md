@@ -1,7 +1,7 @@
 Read-Me file for project
 ------------------------
 
-0. Run the spider by going to the root folder and running 'scrapy crawl stats'
+0. Run the spider by going to the 'rsge_bot' folder and running 'scrapy crawl stats'
 
 1. Project is in starting faze
 
